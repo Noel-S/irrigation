@@ -72,7 +72,7 @@ def callbackA(entrada):
         try:
             doc = db.collection(u'usuarios').document(planta1.id).get()
             correo = doc.to_dict()[u'correo']
-            print("Se enviara correo a: "+correo)
+            print(u"Se enviará correo a: "+correo)
             mandarCorreo(correo)
         except google.cloud.exceptions.NotFound:
             print('Missing data')
@@ -88,7 +88,7 @@ def callbackB(entrada):
         try:
             doc = db.collection(u'usuarios').document(planta2.id).get()
             correo = doc.to_dict()[u'correo']
-            print("Se enviara correo a: "+correo)
+            print(u"Se enviará correo a: "+correo)
             mandarCorreo(correo)
         except google.cloud.exceptions.NotFound:
             print('Missing data')
@@ -104,7 +104,7 @@ def callbackC(entrada):
         try:
             doc = db.collection(u'usuarios').document(planta1.id).get()
             correo = doc.to_dict()[u'correo']
-            print("Se enviara correo a: "+correo)
+            print(u"Se enviará correo a: "+correo)
             mandarCorreo(correo)
         except google.cloud.exceptions.NotFound:
             print('Missing data')
