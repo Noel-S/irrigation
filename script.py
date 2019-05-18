@@ -16,22 +16,17 @@ app = firebase_admin.initialize_app(cred)
 
 db = firestore.client()
 
-estadoP1 = 1
-estadoP2 = 1
-estadoP3 = 1
-
 class Planta:
-    def __init__(self, id, pinIn, pinOut, estado):
+    def __init__(self, id, pinIn, pinOut):
         self.id = id
         self.pinIn = pinIn
         self.pinOut = pinOut
-        self.estado = estado
 
 GPIO.setmode(GPIO.BCM)
 
-planta1 = Planta("AEVuWwfwto4BhQeRKApT", 16, 13, 1)
-planta2 = Planta("IqQBBZYPNO2m9gar86r4", 20, 19, 1)
-planta3 = Planta("bNUOBb0StFx3AmefMeKf", 21, 26, 1)
+planta1 = Planta("AEVuWwfwto4BhQeRKApT", 16, 13)
+planta2 = Planta("IqQBBZYPNO2m9gar86r4", 20, 19)
+planta3 = Planta("bNUOBb0StFx3AmefMeKf", 21, 26)
 
 GPIO.setup(planta1.pinIn, GPIO.IN)
 GPIO.setup(planta1.pinOut, GPIO.OUT)
@@ -51,7 +46,7 @@ def mandarCorreo(correo):
     password = "70,Verde"
     msg['From'] = "losmascorales@gmail.com"
     msg['To'] = correo
-    msg['Subject'] = "Detector de humedad"
+    msg['Subject'] = "Estado de su planta"
  
     # add in the message body
     msg.attach(MIMEText(message, 'plain'))
@@ -71,23 +66,16 @@ def callbackA(entrada):
     if (GPIO.input(entrada)):
         print("No se ha detectado agua en la planta: " + planta1.id)
         GPIO.output(planta1.pinOut, GPIO.HIGH)
-        planta1.estado = 0
     else:
         print("Se ha detectado agua en la planta: " + planta1.id)
-        if(planta1.estado == 0):
-            planta1.estado = 1
-        elif(planta1.estado == 1):
-            planta1.estado = 2
             #Manda correo
-            try:
-                doc = db.collection(u'usuarios').document(planta1.id).get()
-                correo = doc.to_dict()[u'correo']
-                print(correo)
-                mandarCorreo(correo)
-            except google.cloud.exceptions.NotFound:
-                print('Missing data')
-        elif(planta1.estado == 2):
-            planta1.estado = 0
+        try:
+            doc = db.collection(u'usuarios').document(planta1.id).get()
+            correo = doc.to_dict()[u'correo']
+            print("Se enviará correo a: "+correo)
+            mandarCorreo(correo)
+        except google.cloud.exceptions.NotFound:
+            print('Missing data')
         GPIO.output(planta1.pinOut, GPIO.LOW)
 
 def callbackB(entrada):
@@ -96,42 +84,30 @@ def callbackB(entrada):
         GPIO.output(planta2.pinOut, GPIO.HIGH)
     else:
         print("Se ha detectado agua en la planta: " + planta2.id)
-        if(planta2.estado == 0):
-            planta2.estado = 1
-        elif(planta2.estado == 1):
-            planta2.estado = 2    
-            #Manda correo
-            try:
-                doc = db.collection(u'usuarios').document(planta2.id).get()
-                correo = doc.to_dict()[u'correo']
-                print(correo)
-                mandarCorreo(correo)
-            except google.cloud.exceptions.NotFound:
-                print('Missing data')
-        elif(planta2.estado == 2):
-            planta2.estado = 0
+        #Manda correo
+        try:
+            doc = db.collection(u'usuarios').document(planta2.id).get()
+            correo = doc.to_dict()[u'correo']
+            print("Se enviará correo a: "+correo)
+            mandarCorreo(correo)
+        except google.cloud.exceptions.NotFound:
+            print('Missing data')
         GPIO.output(planta2.pinOut, GPIO.LOW)
-    
+
 def callbackC(entrada):
     if (GPIO.input(entrada)):
         print("No se ha detectado agua en la planta: " + planta3.id)
         GPIO.output(planta3.pinOut, GPIO.HIGH)
     else:
         print("Se ha detectado agua en la planta: " + planta3.id)
-        if(planta3.estado == 0):
-            planta3.estado = 1
-        elif(planta3.estado == 1):
-            planta3.estado = 2   
-            #Manda correo
-            try:
-                doc = db.collection(u'usuarios').document(planta1.id).get()
-                correo = doc.to_dict()[u'correo']
-                print(correo)
-                mandarCorreo(correo)
-            except google.cloud.exceptions.NotFound:
-                print('Missing data')
-        elif(planta3.estado == 2):
-            planta3.estado = 0
+        #Manda correo
+        try:
+            doc = db.collection(u'usuarios').document(planta1.id).get()
+            correo = doc.to_dict()[u'correo']
+            print(correo)
+            mandarCorreo(correo)
+        except google.cloud.exceptions.NotFound:
+            print('Missing data')
         GPIO.output(planta3.pinOut, GPIO.LOW)
 
 GPIO.add_event_detect(planta1.pinIn, GPIO.BOTH, bouncetime=300)
