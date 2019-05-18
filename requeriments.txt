@@ -1,3 +1,1 @@
-RPi.GPIO
-firebase-admin
-google-cloud-firestore
+RPi.GPIO firebase-admin google-cloud-firestore
