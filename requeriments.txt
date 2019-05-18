@@ -1,0 +1,6 @@
+RPi.GPIO
+time
+email.mime.multipart
+email.mime.text
+smtplib
+firebase_admin
