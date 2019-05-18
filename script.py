@@ -11,7 +11,7 @@ from firebase_admin import firestore
 
 import datetime
 
-cred = credentials.Certificate("/home/pis/script/plantas-dc918-firebase-adminsdk-dcwmf-394c1c400a.json")
+cred = credentials.Certificate("/usr/src/app/plantas-dc918-firebase-adminsdk-dcwmf-394c1c400a.json")
 app = firebase_admin.initialize_app(cred)
 
 db = firestore.client()
