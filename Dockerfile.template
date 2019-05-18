@@ -6,7 +6,8 @@ ENV INITSYSTEM on
 # pip install python deps from requirements.txt
 # For caching until requirements.txt changes
 
-RUN pip install RPi.GPIO firebase-admin google-cloud-firestore
+COPY ./requirements.txt /requirements.txt
+RUN pip install /requirements.txt
 
 COPY . /usr/src/app
 WORKDIR /usr/src/app
