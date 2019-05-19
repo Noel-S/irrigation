@@ -44,9 +44,10 @@ GPIO.setup(planta3.pinIn, GPIO.IN)
 GPIO.setup(planta3.pinOut, GPIO.OUT)
 
 def mandarCorreo(correo):
+    print(u'Se mandará correo a: ' + correo)
     # Crear una instancia para el mensaje
     msg = MIMEMultipart()
-    message = "Se ha regado su planta hoy: " + datetime.datetime.now()
+    message = "Se ha regado su planta hoy: " + datetime.datetime.now().strftime("%c")
  
     # Asignar los parametros del mensaje.
     password = "70,Verde"
@@ -105,8 +106,6 @@ def callbackC(entrada):
         #Manda correo
         try:
             doc = db.collection(u'usuarios').document(planta3.id).get()
-            #correo = u'{}'.format(doc.to_dict()[u'correo'])
-            #print(u'Se mandará correo a: ' + correo)
             mandarCorreo( u'{}'.format(doc.to_dict()[u'correo']) )
         except google.cloud.exceptions.NotFound:
             print(u'Datos no encontrados')
