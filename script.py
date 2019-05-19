@@ -29,9 +29,9 @@ class Planta:
 GPIO.setmode(GPIO.BCM)
 
 # Crear las instancias de las plantas.
-planta1 = Planta("AEVuWwfwto4BhQeRKApT", 16, 13)
-planta2 = Planta("IqQBBZYPNO2m9gar86r4", 20, 19)
-planta3 = Planta("bNUOBb0StFx3AmefMeKf", 21, 26)
+planta1 = Planta(u'IqQBBZYPNO2m9gar86r4', 16, 13)
+planta2 = Planta(u'bNUOBb0StFx3AmefMeKf', 20, 19)
+planta3 = Planta(u'AEVuWwfwto4BhQeRKApT', 21, 26)
 
 # Asignar el modo de funcionamiento a los pines GPIO por cada planta.
 GPIO.setup(planta1.pinIn, GPIO.IN)
@@ -77,9 +77,7 @@ def callbackA(entrada):
             #Manda correo
         try:
             doc = db.collection(u'usuarios').document(planta1.id).get()
-            correo = u'{}'.format(doc.to_dict()[u'correo'])
-            print(u'Se mandará correo a: ' + correo)
-            mandarCorreo(correo)
+            mandarCorreo( u'{}'.format(doc.to_dict()[u'correo']) )
         except google.cloud.exceptions.NotFound:
             print('Datos no encontrados')
         GPIO.output(planta1.pinOut, GPIO.LOW)
@@ -93,9 +91,7 @@ def callbackB(entrada):
         #Manda correo
         try:
             doc = db.collection(u'usuarios').document(planta2.id).get()
-            correo = u'{}'.format(doc.to_dict()[u'correo'])
-            print(u'Se mandará correo a: ' + correo)
-            mandarCorreo(correo)
+            mandarCorreo( u'{}'.format(doc.to_dict()[u'correo']) )
         except google.cloud.exceptions.NotFound:
             print(u'Datos no encontrados')
         GPIO.output(planta2.pinOut, GPIO.LOW)
@@ -109,9 +105,9 @@ def callbackC(entrada):
         #Manda correo
         try:
             doc = db.collection(u'usuarios').document(planta3.id).get()
-            correo = u'{}'.format(doc.to_dict()[u'correo'])
-            print(u'Se mandará correo a: ' + correo)
-            mandarCorreo(correo)
+            #correo = u'{}'.format(doc.to_dict()[u'correo'])
+            #print(u'Se mandará correo a: ' + correo)
+            mandarCorreo( u'{}'.format(doc.to_dict()[u'correo']) )
         except google.cloud.exceptions.NotFound:
             print(u'Datos no encontrados')
         GPIO.output(planta3.pinOut, GPIO.LOW)
