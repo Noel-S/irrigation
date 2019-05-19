@@ -1,6 +1,7 @@
 # encoding: utf-8
 import RPi.GPIO as GPIO
 import time
+import datetime
 
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
@@ -9,8 +10,6 @@ import smtplib
 import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import firestore
-
-import datetime
 
 # Obtener las creddenciales del archivo json para usar un proyecto de firebase.
 cred = credentials.Certificate("/usr/src/app/plantas-dc918-firebase-adminsdk-dcwmf-394c1c400a.json")
@@ -78,11 +77,11 @@ def callbackA(entrada):
             #Manda correo
         try:
             doc = db.collection(u'usuarios').document(planta1.id).get()
-            correo = doc.to_dict()[u'correo']
-            print("Se enviará correo a: "+correo)
+            correo = u'{}'.format(doc.to_dict()[u'correo'])
+            print(u'Se mandará correo a: ' + correo)
             mandarCorreo(correo)
         except google.cloud.exceptions.NotFound:
-            print('Missing data')
+            print('Datos no encontrados')
         GPIO.output(planta1.pinOut, GPIO.LOW)
 
 def callbackB(entrada):
@@ -94,11 +93,11 @@ def callbackB(entrada):
         #Manda correo
         try:
             doc = db.collection(u'usuarios').document(planta2.id).get()
-            correo = doc.to_dict()[u'correo']
-            print(u"Se enviará correo a: "+correo)
+            correo = u'{}'.format(doc.to_dict()[u'correo'])
+            print(u'Se mandará correo a: ' + correo)
             mandarCorreo(correo)
         except google.cloud.exceptions.NotFound:
-            print(u'Missing data')
+            print(u'Datos no encontrados')
         GPIO.output(planta2.pinOut, GPIO.LOW)
 
 def callbackC(entrada):
@@ -109,12 +108,12 @@ def callbackC(entrada):
         print(u"Se ha detectado agua en la planta: " + planta3.id)
         #Manda correo
         try:
-            doc = db.collection(u'usuarios').document(planta1.id).get()
-            correo = doc.to_dict()[u'correo']
-            print(u"Se enviará correo a: "+correo)
+            doc = db.collection(u'usuarios').document(planta3.id).get()
+            correo = u'{}'.format(doc.to_dict()[u'correo'])
+            print(u'Se mandará correo a: ' + correo)
             mandarCorreo(correo)
         except google.cloud.exceptions.NotFound:
-            print(u'Missing data')
+            print(u'Datos no encontrados')
         GPIO.output(planta3.pinOut, GPIO.LOW)
 
 # Añadir un detecto de eventos por cada una de las plantas.
